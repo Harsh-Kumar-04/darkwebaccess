@@ -1,0 +1,1539 @@
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>DARK WEB ACCESS | ACCESS TERMINAL</title>
+
+<style>
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+}
+
+body {
+    background: #030405;
+    color: #ddd;
+    font-family: "Courier New", monospace;
+    min-height: 100vh;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    padding: 20px;
+    overflow-x: hidden;
+}
+
+body::before {
+    content: "";
+    position: fixed;
+    inset: 0;
+    pointer-events: none;
+    background: repeating-linear-gradient(
+        0deg,
+        rgba(255,255,255,0.018) 0px,
+        transparent 2px,
+        transparent 4px
+    );
+    z-index: 10;
+}
+
+body::after {
+    content: "";
+    position: fixed;
+    inset: 0;
+    pointer-events: none;
+    background: radial-gradient(ellipse, transparent 20%, #000 100%);
+    z-index: 10;
+}
+
+/* STEP 1: LOGIN PAGE */
+
+.container {
+    width: 950px;
+    max-width: 100%;
+    min-height: 580px;
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    background: #08090c;
+    border: 1px solid #292929;
+    box-shadow: 0 0 50px #000, 0 0 35px rgba(130,0,12,0.15);
+    position: relative;
+    z-index: 1;
+}
+
+.left {
+    padding: 45px;
+    display: flex;
+    flex-direction: column;
+    justify-content: space-between;
+    background: radial-gradient(ellipse at center, #252525, #08090c 70%);
+}
+
+.logo {
+    font-size: 14px;
+    letter-spacing: 4px;
+    color: #ddd;
+}
+
+.logo span {
+    color: #ff2638;
+}
+
+.warning {
+    margin-top: 100px;
+}
+
+.warning small {
+    color: #ff2638;
+    letter-spacing: 3px;
+    font-size: 10px;
+}
+
+h1 {
+    font-size: 58px;
+    margin: 22px 0;
+    line-height: 0.95;
+    letter-spacing: -3px;
+    text-shadow: 0 0 20px rgba(255,0,20,0.15);
+}
+
+h1 span {
+    color: #b20d19;
+}
+
+.warning p {
+    color: #858585;
+    font-size: 12px;
+    line-height: 1.8;
+    max-width: 350px;
+}
+
+.footer {
+    color: #666;
+    font-size: 10px;
+    letter-spacing: 2px;
+}
+
+.right {
+    padding: 55px 40px;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    border-left: 1px solid #252525;
+}
+
+.status {
+    color: #999;
+    font-size: 11px;
+    margin-bottom: 45px;
+    letter-spacing: 2px;
+}
+
+.dot {
+    color: red;
+    text-shadow: 0 0 12px red;
+    margin-right: 8px;
+}
+
+h2 {
+    font-size: 20px;
+    letter-spacing: 2px;
+    font-weight: normal;
+}
+
+.subtitle {
+    color: #777;
+    font-size: 11px;
+    margin: 12px 0 25px;
+    line-height: 1.7;
+}
+
+label {
+    display: block;
+    font-size: 11px;
+    color: #999;
+    margin: 20px 0 10px;
+    letter-spacing: 2px;
+}
+
+input {
+    width: 100%;
+    padding: 15px;
+    background: #08090c;
+    border: 1px solid #333;
+    outline: none;
+    color: white;
+    font-family: monospace;
+    font-size: 12px;
+    transition: 0.3s;
+}
+
+input:focus {
+    border-color: #b20d19;
+    box-shadow: 0 0 15px #450009;
+}
+
+input::placeholder {
+    color: #555;
+}
+
+button {
+    width: 100%;
+    margin-top: 28px;
+    padding: 16px;
+    background: #580810;
+    border: 1px solid #a31520;
+    color: white;
+    letter-spacing: 3px;
+    cursor: pointer;
+    font-family: monospace;
+    transition: 0.3s;
+}
+
+button:hover {
+    background: #a31520;
+    box-shadow: 0 0 25px #70000c;
+}
+
+#message {
+    margin-top: 20px;
+    font-size: 11px;
+    color: #c6c6c6;
+    line-height: 1.7;
+    min-height: 35px;
+}
+
+.note {
+    border-top: 1px solid #292929;
+    padding-top: 18px;
+    margin-top: 30px;
+    font-size: 10px;
+    color: #666;
+    line-height: 1.7;
+}
+
+.note strong {
+    color: #b20d19;
+    font-weight: normal;
+}
+
+/* STEP 2: ACCESS GRANTED */
+
+#accessScreen {
+    display: none;
+    position: fixed;
+    inset: 0;
+    z-index: 5;
+    min-height: 100vh;
+    padding: 30px 20px;
+    background: radial-gradient(
+        ellipse at center,
+        #180307 0%,
+        #050506 55%,
+        #000 100%
+    );
+    align-items: center;
+    justify-content: center;
+    text-align: center;
+}
+
+.access-content {
+    width: min(700px, 100%);
+}
+
+.access-kicker {
+    color: #888;
+    font-size: 11px;
+    letter-spacing: 4px;
+    margin-bottom: 24px;
+}
+
+#accessScreen h2 {
+    color: #ff2638;
+    font-size: clamp(32px, 7vw, 66px);
+    letter-spacing: 4px;
+    text-shadow: 0 0 12px #a00016, 0 0 35px rgba(255,0,30,.45);
+    animation: flicker 2.4s infinite;
+}
+
+.access-subtitle {
+    color: #888;
+    font-size: 11px;
+    letter-spacing: 2px;
+    margin: 18px 0 30px;
+}
+
+.terminal {
+    padding: 22px;
+    min-height: 190px;
+    border: 1px solid #491018;
+    background: rgba(0,0,0,.72);
+    box-shadow: 0 0 30px rgba(120,0,15,.18);
+    text-align: left;
+    line-height: 2;
+    font-size: 12px;
+}
+
+.terminal-line {
+    color: #aaa;
+}
+
+.terminal-line.alert {
+    color: #ff2638;
+}
+
+.terminal-line.success {
+    color: #b7c9b7;
+}
+
+@keyframes flicker {
+    0%, 18%, 22%, 60%, 64%, 100% { opacity: 1; }
+    20%, 62% { opacity: .55; }
+}
+
+.glitch {
+    animation: glitch .16s 4;
+}
+
+@keyframes glitch {
+    0% { transform: translate(0); filter:none; }
+    25% { transform: translate(3px,-1px); filter:hue-rotate(30deg); }
+    50% { transform: translate(-2px,1px); }
+    75% { transform: translate(1px,2px); filter:contrast(1.5); }
+    100% { transform: translate(0); filter:none; }
+}
+
+/* STEP 3: ENCRYPTED CODE */
+
+#codeScreen {
+    display: none;
+    position: fixed;
+    inset: 0;
+    z-index: 6;
+    background: #000;
+    color: #999;
+    padding: 25px;
+    overflow: hidden;
+    flex-direction: column;
+}
+
+.code-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    border-bottom: 1px solid #292929;
+    padding-bottom: 18px;
+    font-size: 11px;
+    letter-spacing: 2px;
+}
+
+.live {
+    color: #8aff8a;
+    text-shadow: 0 0 10px #00ff00;
+}
+
+.code-title {
+    margin: 35px 0 20px;
+}
+
+.code-title h2 {
+    color: #ff2638;
+    font-size: clamp(20px, 4vw, 34px);
+    letter-spacing: 3px;
+    text-shadow: 0 0 15px #80000c;
+}
+
+.code-title p {
+    color: #777;
+    font-size: 11px;
+    margin-top: 12px;
+    letter-spacing: 2px;
+}
+
+#codeOutput {
+    flex: 1;
+    overflow: hidden;
+    font-size: 12px;
+    line-height: 1.9;
+    overflow-wrap: anywhere;
+}
+
+.code-red {
+    color: #ff2638;
+    text-shadow: 0 0 8px #80000c;
+}
+
+.code-green {
+    color: #8aff8a;
+    text-shadow: 0 0 8px #006600;
+}
+
+.code-normal {
+    color: #777;
+}
+
+.code-footer {
+    border-top: 1px solid #292929;
+    padding-top: 15px;
+    margin-top: 15px;
+    display: flex;
+    justify-content: space-between;
+    font-size: 10px;
+    color: #666;
+    letter-spacing: 2px;
+}
+
+/* STEP 4: SECURITY WARNING */
+
+#welcomeScreen {
+    display: none;
+    position: fixed;
+    inset: 0;
+    z-index: 7;
+    background: radial-gradient(ellipse at center, #190000 0%, #050000 58%, #000 100%);
+    align-items: center;
+    justify-content: center;
+    flex-direction: column;
+    text-align: center;
+    padding: 25px;
+}
+
+.warning-box {
+    width: min(750px, 100%);
+    padding: 40px 30px;
+    border: 1px solid #7a101a;
+    background: rgba(15, 0, 0, 0.85);
+    box-shadow: 0 0 35px rgba(255, 0, 20, 0.15);
+    text-align: center;
+}
+
+.warning-icon {
+    color: #ff2638;
+    font-size: 48px;
+    margin-bottom: 20px;
+    text-shadow: 0 0 20px red;
+}
+
+.warning-box h2 {
+    color: #ff2638;
+    font-size: clamp(25px, 5vw, 42px);
+    letter-spacing: 4px;
+    margin-bottom: 30px;
+}
+
+.warning-box p {
+    color: #aaa;
+    font-size: 13px;
+    line-height: 2;
+    margin: 18px 0;
+}
+
+.warning-box .warning-highlight {
+    color: #ff2638;
+    border-top: 1px solid #491018;
+    border-bottom: 1px solid #491018;
+    padding: 18px 5px;
+}
+
+.warning-footer {
+    color: #777;
+    font-size: 10px;
+    letter-spacing: 2px;
+    margin-top: 25px;
+}
+
+/* STEP 5: WORLDWIDE ARCHIVE */
+
+#fetchScreen {
+    display: none;
+    position: fixed;
+    inset: 0;
+    z-index: 8;
+    background: #030303;
+    color: #aaa;
+    padding: 28px;
+    overflow-y: auto;
+    flex-direction: column;
+}
+
+.fetch-heading {
+    color: #ff2638;
+    font-size: clamp(19px, 3vw, 26px);
+    letter-spacing: 3px;
+    border-bottom: 1px solid #491018;
+    padding-bottom: 17px;
+}
+
+.fetch-info {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 22px;
+    margin: 20px 0;
+    color: #888;
+    font-size: 11px;
+}
+
+.fetch-info span {
+    color: #ff2638;
+}
+
+.fetch-progress {
+    height: 8px;
+    background: #26070a;
+    margin-bottom: 10px;
+}
+
+#fetchBar {
+    height: 100%;
+    width: 0%;
+    background: #e00016;
+    box-shadow: 0 0 12px #e00016;
+    transition: width .1s;
+}
+
+#fetchPercent {
+    color: #ff2638;
+    font-size: 11px;
+    margin-bottom: 19px;
+}
+
+.fetch-nodes {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 9px;
+    margin-bottom: 18px;
+}
+
+.fetch-node {
+    border: 1px solid #421018;
+    padding: 7px 9px;
+    color: #777;
+    font-size: 10px;
+}
+
+.fetch-node.active {
+    color: #ff2638;
+    border-color: #ff2638;
+    box-shadow: 0 0 9px rgba(255,0,30,.25);
+}
+
+#fetchFiles {
+    height: 320px;
+    overflow-y: auto;
+    border: 1px solid #351018;
+    background: rgba(10,0,0,.55);
+    padding: 12px;
+}
+
+.fetch-file {
+    display: flex;
+    justify-content: space-between;
+    gap: 12px;
+    padding: 9px 5px;
+    border-bottom: 1px solid #241014;
+    font-size: 11px;
+    animation: fetchAppear .25s ease;
+}
+
+@keyframes fetchAppear {
+    from { opacity: 0; transform: translateY(6px); }
+    to { opacity: 1; transform: translateY(0); }
+}
+
+.fetch-file-name {
+    color: #c8c8c8;
+    overflow-wrap: anywhere;
+}
+
+.fetch-file-status {
+    color: #ff2638;
+    white-space: nowrap;
+}
+
+#fetchComplete {
+    color: #ff2638;
+    font-size: 12px;
+    line-height: 2;
+    margin-top: 18px;
+    text-shadow: 0 0 8px rgba(255,0,0,.5);
+}
+
+.fetch-disclaimer {
+    color: #555;
+    font-size: 10px;
+    line-height: 1.7;
+    margin-top: 14px;
+}
+
+/* MOBILE */
+
+@media (max-width:700px) {
+    .container {
+        grid-template-columns: 1fr;
+    }
+
+    .left {
+        min-height: 320px;
+    }
+
+    .warning {
+        margin-top: 65px;
+    }
+
+    .right {
+        border-left: none;
+        border-top: 1px solid #252525;
+        padding: 40px 28px;
+    }
+
+    h1 {
+        font-size: 48px;
+    }
+
+    #codeScreen {
+        padding: 15px;
+    }
+
+    .code-header {
+        font-size: 9px;
+    }
+
+    #codeOutput {
+        font-size: 10px;
+    }
+
+    #fetchScreen {
+        padding: 18px;
+    }
+
+    .fetch-file {
+        flex-direction: column;
+        gap: 5px;
+    }
+
+    .warning-box {
+        padding: 30px 18px;
+    }
+}
+</style>
+</head>
+
+<body>
+
+<!-- STEP 1: LOGIN PAGE -->
+
+<div class="container" id="loginPage">
+
+    <section class="left">
+
+        <div class="logo">
+            DARK WEB <span>//</span> ACCESS
+        </div>
+
+        <div class="warning">
+            <small>RESTRICTED ENVIRONMENT</small>
+
+            <h1>
+                DARK WEB<br>
+                <span>ACCESS</span>
+            </h1>
+
+            <p>
+                Some doors are better left unopened.
+                Not everything on the internet is visible.
+                Enter the unknown and discover the hidden side
+                of cyberspace.
+            </p>
+        </div>
+
+        <div class="footer">
+            NODE: LISTED | SESSION: UNKNOWN
+        </div>
+
+    </section>
+
+    <section class="right">
+
+        <div class="status">
+            <span class="dot">●</span>
+            SYSTEM ONLINE //
+        </div>
+
+        <h2>IDENTITY VERIFICATION</h2>
+
+        <p class="subtitle">
+            Enter your access details to continue.
+        </p>
+
+        <form id="loginForm">
+
+            <label for="username">IDENTIFIER</label>
+
+            <input
+                type="text"
+                id="username"
+                placeholder="Enter username"
+                autocomplete="off"
+                required
+            >
+
+            <label for="password">ACCESS PHRASE</label>
+
+            <input
+                type="password"
+                id="password"
+                placeholder="Enter password"
+                autocomplete="off"
+                required
+            >
+
+            <button type="submit">
+                REQUEST ACCESS →
+            </button>
+
+        </form>
+
+        <div id="message"></div>
+
+        <div class="note">
+            <strong>WARNING:</strong>
+            NOT EVERYTHING YOU FIND HERE WAS MEANT TO BE DISCOVERED.
+            <br><br>
+        </div>
+
+    </section>
+
+</div>
+
+<!-- STEP 2: ACCESS GRANTED -->
+
+<section id="accessScreen">
+
+    <div class="access-content">
+
+        <div class="access-kicker">
+            [ SYSTEM RESPONSE ]
+        </div>
+
+        <h2>ACCESS GRANTED</h2>
+
+        <p class="access-subtitle">
+            IDENTITY VERIFIED //
+        </p>
+
+        <div class="terminal" id="terminal"></div>
+
+    </div>
+
+</section>
+
+<!-- STEP 3: ENCRYPTED CODE -->
+
+<section id="codeScreen">
+
+    <div class="code-header">
+        <div>DARK WEB ACCESS // ENCRYPTED TERMINAL</div>
+        <div class="live">● LIVE FEED</div>
+    </div>
+
+    <div class="code-title">
+        <h2>PROTECTED NETWORK DETECTED</h2>
+        <p>ENCRYPTED DATA STREAM</p>
+        <p>TRACE STATUS: UNIDENTIFIED</p>
+    </div>
+
+    <div id="codeOutput"></div>
+
+    <div class="code-footer">
+        <span>WARNING: UNAUTHORIZED NODE</span>
+        <span>CONNECTION: PROTECTED</span>
+    </div>
+
+</section>
+
+<!-- STEP 4: SECURITY WARNING -->
+
+<section id="welcomeScreen">
+
+    <div class="warning-box">
+
+        <div class="warning-icon">⚠</div>
+
+        <h2>SECURITY WARNING</h2>
+
+        <p>
+            THE DATA AVAILABLE ON THIS NETWORK MAY CONTAIN
+            SENSITIVE, CONFIDENTIAL OR DISTURBING CONTENT.
+        </p>
+
+        <p>
+            ACCESSING UNKNOWN NETWORKS MAY EXPOSE YOUR
+            PERSONAL INFORMATION AND CREATE A RISK OF DATA LEAKS.
+        </p>
+
+        <p class="warning-highlight">
+            PROCEED ONLY ON A SECURE NETWORK.
+        </p>
+
+        <div class="warning-footer">
+            [ // PROCEED WITH CAUTION ]
+        </div>
+
+    </div>
+
+</section>
+
+<!-- STEP 5: WORLDWIDE ARCHIVE -->
+
+<section id="fetchScreen">
+
+    <h2 class="fetch-heading">GLOBAL ARCHIVE // SCANNING</h2>
+
+    <div class="fetch-info">
+        <div>FILES INDEXED: <span id="fetchCount">0</span></div>
+        <div>NODES SCANNED: <span id="fetchNodeCount">0</span></div>
+        <div>STATUS: <span id="fetchStatus">INITIALIZING</span></div>
+    </div>
+
+    <div class="fetch-progress">
+        <div id="fetchBar"></div>
+    </div>
+
+    <div id="fetchPercent">INITIALIZING... 0%</div>
+
+    <div class="fetch-nodes" id="fetchNodes">
+        <div class="fetch-node">NORTH AMERICA</div>
+        <div class="fetch-node">EUROPE</div>
+        <div class="fetch-node">ASIA PACIFIC</div>
+        <div class="fetch-node">SOUTH AMERICA</div>
+        <div class="fetch-node">MIDDLE EAST</div>
+        <div class="fetch-node">AFRICA</div>
+        <div class="fetch-node">UNKNOWN NODE</div>
+    </div>
+
+    <div id="fetchFiles"></div>
+
+    <div id="fetchComplete"></div>
+
+    <div class="fetch-disclaimer">
+        This is a fictional local simulation. No real files are accessed or downloaded.
+    </div>
+
+</section>
+
+<script>
+
+/* =====================================
+   DARK WEB HORROR SOUND ENGINE
+===================================== */
+
+let audioContext = null;
+let masterGain = null;
+let backgroundOscillators = [];
+let backgroundStarted = false;
+let audioReady = false;
+
+function initializeAudio() {
+
+    if (!audioContext) {
+
+        const AudioContextClass =
+            window.AudioContext || window.webkitAudioContext;
+
+        if (!AudioContextClass) return Promise.resolve();
+
+        audioContext = new AudioContextClass();
+
+        masterGain = audioContext.createGain();
+        masterGain.gain.value = 0.35;
+        masterGain.connect(audioContext.destination);
+    }
+
+    if (audioContext.state === "suspended") {
+        return audioContext.resume();
+    }
+
+    return Promise.resolve();
+}
+
+function playTone(frequency, duration, volume = 0.2, type = "sine") {
+
+    if (!audioContext || !masterGain) return;
+
+    const oscillator = audioContext.createOscillator();
+    const gain = audioContext.createGain();
+
+    oscillator.type = type;
+
+    oscillator.frequency.setValueAtTime(
+        frequency,
+        audioContext.currentTime
+    );
+
+    gain.gain.setValueAtTime(0.001, audioContext.currentTime);
+
+    gain.gain.exponentialRampToValueAtTime(
+        Math.max(volume, 0.002),
+        audioContext.currentTime + 0.04
+    );
+
+    gain.gain.exponentialRampToValueAtTime(
+        0.001,
+        audioContext.currentTime + duration
+    );
+
+    oscillator.connect(gain);
+    gain.connect(masterGain);
+
+    oscillator.start();
+    oscillator.stop(audioContext.currentTime + duration + 0.05);
+}
+
+function playNoise(duration = 0.3, volume = 0.12) {
+
+    if (!audioContext || !masterGain) return;
+
+    const bufferSize = Math.floor(
+        audioContext.sampleRate * duration
+    );
+
+    const buffer = audioContext.createBuffer(
+        1,
+        bufferSize,
+        audioContext.sampleRate
+    );
+
+    const data = buffer.getChannelData(0);
+
+    for (let i = 0; i < bufferSize; i++) {
+        data[i] = Math.random() * 2 - 1;
+    }
+
+    const source = audioContext.createBufferSource();
+    const gain = audioContext.createGain();
+
+    source.buffer = buffer;
+
+    gain.gain.setValueAtTime(volume, audioContext.currentTime);
+
+    gain.gain.exponentialRampToValueAtTime(
+        0.001,
+        audioContext.currentTime + duration
+    );
+
+    source.connect(gain);
+    gain.connect(masterGain);
+
+    source.start();
+}
+
+function startBackgroundHorror() {
+
+    if (!audioContext || backgroundStarted) return;
+
+    backgroundStarted = true;
+
+    // Deep horror drone
+
+    [45, 47, 65].forEach((frequency, index) => {
+
+        const oscillator = audioContext.createOscillator();
+        const gain = audioContext.createGain();
+
+        oscillator.type = "sawtooth";
+        oscillator.frequency.value = frequency;
+
+        gain.gain.value = index === 2 ? 0.018 : 0.025;
+
+        oscillator.connect(gain);
+        gain.connect(masterGain);
+
+        oscillator.start();
+
+        backgroundOscillators.push({
+            oscillator,
+            gain
+        });
+
+    });
+
+    // Eerie low-frequency pulse
+
+    const pulse = audioContext.createOscillator();
+    const pulseGain = audioContext.createGain();
+
+    pulse.frequency.value = 0.12;
+    pulseGain.gain.value = 0.025;
+
+    pulse.connect(pulseGain);
+    pulseGain.connect(masterGain);
+
+    pulse.start();
+
+    backgroundOscillators.push({
+        oscillator: pulse,
+        gain: pulseGain
+    });
+}
+
+function stopBackgroundHorror() {
+
+    backgroundOscillators.forEach(item => {
+        try {
+            item.oscillator.stop();
+        } catch (error) {}
+    });
+
+    backgroundOscillators = [];
+    backgroundStarted = false;
+}
+
+function accessImpact() {
+
+    playTone(48, 1.2, 0.55, "sawtooth");
+
+    setTimeout(() => {
+        playTone(85, 0.8, 0.3, "triangle");
+    }, 100);
+
+    playNoise(0.5, 0.16);
+}
+
+function glitchSound() {
+
+    playNoise(0.16, 0.12);
+
+    playTone(950, 0.08, 0.08, "square");
+
+    setTimeout(() => {
+        playTone(350, 0.12, 0.08, "sawtooth");
+    }, 100);
+}
+
+function typingSound() {
+
+    playTone(
+        400 + Math.random() * 500,
+        0.035,
+        0.025,
+        "square"
+    );
+}
+
+function scanSound() {
+
+    playTone(
+        550 + Math.random() * 500,
+        0.08,
+        0.045,
+        "sine"
+    );
+}
+
+function warningSound() {
+
+    playTone(180, 0.5, 0.25, "sawtooth");
+
+    setTimeout(() => {
+        playTone(125, 0.7, 0.3, "sawtooth");
+    }, 400);
+
+    setTimeout(() => {
+        playNoise(0.5, 0.12);
+    }, 800);
+}
+
+function completionSound() {
+
+    playTone(90, 1.5, 0.4, "sawtooth");
+
+    setTimeout(() => {
+        playTone(55, 2, 0.35, "sine");
+    }, 250);
+
+    setTimeout(() => {
+        playNoise(0.7, 0.08);
+    }, 500);
+}
+
+function restoreAudioVolume() {
+
+    if (!audioContext || !masterGain) return;
+
+    masterGain.gain.setTargetAtTime(
+        0.35,
+        audioContext.currentTime,
+        0.1
+    );
+}
+
+/* AUTOMATIC SOUND START */
+
+function startWebsiteAudio() {
+
+    initializeAudio().then(() => {
+
+        if (audioContext && audioContext.state === "running") {
+
+            restoreAudioVolume();
+            startBackgroundHorror();
+            audioReady = true;
+
+        }
+
+    }).catch(() => {});
+
+}
+
+window.addEventListener("load", startWebsiteAudio);
+
+function enableAudioOnInteraction() {
+
+    if (audioReady) return;
+
+    initializeAudio().then(() => {
+
+        if (audioContext && audioContext.state === "running") {
+
+            restoreAudioVolume();
+            startBackgroundHorror();
+            audioReady = true;
+
+        }
+
+    }).catch(() => {});
+
+}
+
+document.addEventListener("pointerdown", enableAudioOnInteraction);
+document.addEventListener("keydown", enableAudioOnInteraction);
+
+/* =====================================
+   STEP 1: LOGIN FORM
+===================================== */
+
+const form = document.getElementById("loginForm");
+const message = document.getElementById("message");
+
+form.addEventListener("submit", function(event) {
+
+    event.preventDefault();
+
+    const username = document.getElementById("username").value.trim();
+    const password = document.getElementById("password").value;
+
+    if (!username || !password) {
+        message.textContent = "> ACCESS DENIED: Missing information.";
+        return;
+    }
+
+    // Local demo only. Credentials are not saved or transmitted.
+
+    initializeAudio().then(() => {
+
+        if (audioContext && audioContext.state === "running") {
+
+            restoreAudioVolume();
+            startBackgroundHorror();
+            glitchSound();
+            audioReady = true;
+
+        }
+
+    }).catch(() => {});
+
+    const loginPage = document.getElementById("loginPage");
+    const accessScreen = document.getElementById("accessScreen");
+    const terminal = document.getElementById("terminal");
+
+    document.body.classList.add("glitch");
+
+    setTimeout(function() {
+
+        document.body.classList.remove("glitch");
+
+        loginPage.style.display = "none";
+        accessScreen.style.display = "flex";
+
+        runAccessSequence(terminal);
+
+    }, 650);
+
+});
+
+/* =====================================
+   STEP 2: ACCESS GRANTED SEQUENCE
+===================================== */
+
+function runAccessSequence(terminal) {
+
+    const messages = [
+        ["> Initializing local simulation...", ""],
+        ["> Checking interface integrity...", ""],
+        ["> Running demo verification...", ""],
+        ["> Security simulation complete.", "success"],
+        ["> IDENTITY VERIFIED", "alert"],
+        ["> ACCESS GRANTED", "alert"],
+        ["> WELCOME TO DARK NET ACCESS", "success"]
+    ];
+
+    let index = 0;
+
+    function showNext() {
+
+        if (index >= messages.length) return;
+
+        const line = document.createElement("div");
+
+        line.className = "terminal-line " + messages[index][1];
+        line.textContent = messages[index][0];
+
+        terminal.appendChild(line);
+
+        if (messages[index][0] === "> ACCESS GRANTED") {
+            accessImpact();
+        } else {
+            typingSound();
+        }
+
+        index++;
+
+        if (index < messages.length) {
+
+            setTimeout(showNext, 850);
+
+        } else {
+
+            setTimeout(function() {
+
+                document.getElementById("accessScreen").style.display = "none";
+
+                startCodeSequence();
+
+            }, 1000);
+
+        }
+
+    }
+
+    showNext();
+
+}
+
+/* =====================================
+   STEP 3: ENCRYPTED CODE ANIMATION
+===================================== */
+
+function startCodeSequence() {
+
+    const codeScreen = document.getElementById("codeScreen");
+    const codeOutput = document.getElementById("codeOutput");
+
+    codeScreen.style.display = "flex";
+
+    glitchSound();
+
+    const lines = [
+        ["[WARNING] PROTECTED NODE DETECTED", "code-red"],
+        ["[DARKWEB] ACCESSING HIDDEN NETWORK...", "code-normal"],
+        ["[SYSTEM] ENCRYPTION LAYER INITIALIZED", "code-normal"],
+        ["[ACCESS GRANTED] SECURITY LAYER BYPASSED", "code-green"],
+        ["[WARNING] DO NOT TRUST THE SIGNAL", "code-red"],
+        ["[UNKNOWN] YOU ARE NOT ALONE", "code-red"],
+        ["[SYSTEM] SEARCHING FOR UNKNOWN SOURCE...", "code-normal"],
+        ["[ENCRYPTION] DECODING DATA STREAM...", "code-green"],
+        ["[WARNING] CONNECTION UNIDENTIFIED", "code-red"],
+        ["[SYSTEM] TRACE FAILED", "code-red"]
+    ];
+
+    let count = 0;
+
+    const animation = setInterval(function() {
+
+        const line = document.createElement("div");
+
+        if (Math.random() > 0.65) {
+
+            const randomLine = lines[
+                Math.floor(Math.random() * lines.length)
+            ];
+
+            line.textContent = randomLine[0];
+            line.className = randomLine[1];
+
+        } else {
+
+            let randomCode = "";
+
+            const characters = "0123456789ABCDEF";
+
+            for (let i = 0; i < 65; i++) {
+
+                randomCode += characters[
+                    Math.floor(Math.random() * characters.length)
+                ];
+
+            }
+
+            line.textContent = "> " + randomCode;
+            line.className = "code-normal";
+
+        }
+
+        codeOutput.appendChild(line);
+
+        if (count % 5 === 0) {
+            typingSound();
+        }
+
+        if (count % 20 === 0) {
+            glitchSound();
+        }
+
+        while (codeOutput.children.length > 24) {
+            codeOutput.removeChild(codeOutput.firstChild);
+        }
+
+        count++;
+
+        if (count >= 100) {
+
+            clearInterval(animation);
+
+            const finalLine = document.createElement("div");
+
+            finalLine.textContent =
+                "> ENCRYPTED SEQUENCE COMPLETE // CONNECTION UNKNOWN";
+
+            finalLine.className = "code-green";
+
+            codeOutput.appendChild(finalLine);
+
+            setTimeout(function() {
+
+                codeScreen.style.display = "none";
+
+                startWelcomeSequence();
+
+            }, 1500);
+
+        }
+
+    }, 60);
+
+}
+
+/* =====================================
+   STEP 4: SECURITY WARNING
+===================================== */
+
+function startWelcomeSequence() {
+
+    const welcomeScreen = document.getElementById("welcomeScreen");
+
+    welcomeScreen.style.display = "flex";
+
+    warningSound();
+
+    setTimeout(function() {
+
+        welcomeScreen.style.display = "none";
+
+        startWorldwideArchive();
+
+    }, 3000);
+
+}
+
+/* =====================================
+   STEP 5: WORLDWIDE ARCHIVE
+===================================== */
+
+function startWorldwideArchive() {
+
+    const screen = document.getElementById("fetchScreen");
+    const filesContainer = document.getElementById("fetchFiles");
+    const bar = document.getElementById("fetchBar");
+    const percentText = document.getElementById("fetchPercent");
+    const countText = document.getElementById("fetchCount");
+    const nodeCountText = document.getElementById("fetchNodeCount");
+    const statusText = document.getElementById("fetchStatus");
+    const complete = document.getElementById("fetchComplete");
+    const nodes = document.querySelectorAll(".fetch-node");
+
+    const archiveNames = [
+
+        "MINOR_CHILD_SAFETY_INCIDENT_0842",
+        "DEATH_REPORT_ARCHIVE_2917",
+        "UNSOLVED_MURDER_CASE_7310",
+        "POLITICIAN_PRIVATE_CONVERSATION_6204",
+        "MISSING_PERSONS_DATABASE_1839",
+        "UNKNOWN_BODY_IDENTIFICATION_9051",
+        "CLASSIFIED_CORPORATE_RECORD_5021",
+        "GLOBAL_TERRORISM_INTELLIGENCE_9146",
+        "ABANDONED_HOSPITAL_RECORDS_3812",
+        "UNIDENTIFIED_CALLER_LOG_7409",
+        "MIDNIGHT_EMERGENCY_REPORT_6283",
+        "BLACKLISTED_IDENTITY_ARCHIVE_1940",
+        "SUSPICIOUS_DEATH_INVESTIGATION_8572",
+        "UNKNOWN_LOCATION_SURVEILLANCE_LOG_3061",
+        "CONFIDENTIAL_GOVERNMENT_MEMO_4728",
+        "DISAPPEARED_FAMILY_CASE_6195",
+        "DARK_WEB_CRIME_INDEX_2837",
+        "UNREGISTERED_WEAPON_RECORD_9502",
+        "FINAL_WITNESS_STATEMENT_1648",
+        "RESTRICTED_FINANCIAL_TRANSACTION_8371",
+        "SEALED_COLD_CASE_ARCHIVE_5294",
+        "UNKNOWN_SUBJECT_PROFILE_7106",
+        "LAST_KNOWN_LOCATION_REPORT_4389",
+        "CLASSIFIED_OPERATION_NIGHTFALL_2065",
+        "DO_NOT_OPEN_ARCHIVE_0001",
+        "FORGOTTEN_GRAVEYARD_RECORD_7291",
+        "LAST_TRANSMISSION_LOG_4108",
+        "UNKNOWN_PATIENT_FILE_6382",
+        "NIGHTMARE_INCIDENT_REPORT_2057",
+        "UNIDENTIFIED_VOICE_RECORDING_8914",
+        "SEALED_POLICE_EVIDENCE_3160",
+        "MYSTERIOUS_DISAPPEARANCE_7482",
+        "BLACK_ROOM_ARCHIVE_5290",
+        "UNSOLVED_CASE_DELTA_1836",
+        "UNKNOWN_ENTITY_REPORT_6049",
+        "RESTRICTED_MORGUE_REGISTER_9721",
+        "ABANDONED_PROPERTY_LOG_4185",
+        "CLASSIFIED_MIDNIGHT_SIGNAL_7602",
+        "FINAL_SURVIVOR_TESTIMONY_2948",
+        "FORBIDDEN_ARCHIVE_ENTRY_8513",
+        "SHADOW_NETWORK_REPORT_3906",
+        "UNKNOWN_DEATH_LOCATION_6174",
+        "SEALED_GOVERNMENT_CASE_2085",
+        "UNTRACEABLE_IDENTITY_RECORD_9430",
+        "MISSING_WITNESS_ARCHIVE_5726",
+        "RESTRICTED_INCIDENT_DELTA_8061",
+        "UNKNOWN_OPERATION_BLACKOUT_1359",
+        "THE_LAST_KNOWN_MESSAGE_4827",
+        "CLASSIFIED_ARCHIVE_OMEGA_6913",
+        "DO_NOT_ACCESS_AFTER_MIDNIGHT_0007"
+
+    ];
+
+    // Shuffle the 50 fictional names.
+
+    const shuffledNames = [...archiveNames];
+
+    for (let i = shuffledNames.length - 1; i > 0; i--) {
+
+        const j = Math.floor(Math.random() * (i + 1));
+
+        [shuffledNames[i], shuffledNames[j]] =
+        [shuffledNames[j], shuffledNames[i]];
+
+    }
+
+    screen.style.display = "flex";
+
+    glitchSound();
+
+    filesContainer.innerHTML = "";
+    complete.innerHTML = "";
+
+    bar.style.width = "0%";
+    percentText.textContent = "INITIALIZING... 0%";
+
+    countText.textContent = "0";
+    nodeCountText.textContent = "0";
+    statusText.textContent = "SCANNING";
+
+    let loaded = 0;
+    let scannedNodes = 0;
+
+    const timer = setInterval(function() {
+
+        if (loaded >= shuffledNames.length) {
+
+            clearInterval(timer);
+
+            bar.style.width = "100%";
+            percentText.textContent = "ARCHIVE SCAN COMPLETE // 100%";
+            statusText.textContent = "COMPLETE";
+
+            complete.innerHTML =
+                "> VIRTUAL ARCHIVE SCAN COMPLETE<br>" +
+                "> 50 UNIQUE ENTRIES INDEXED<br>" +
+                "> NO REAL FILES WERE DOWNLOADED<br>" +
+                "> SESSION STATUS: UNKNOWN<br>" +
+                "> CONNECTION TERMINATED...";
+
+            completionSound();
+
+            return;
+
+        }
+
+        const row = document.createElement("div");
+        row.className = "fetch-file";
+
+        const name = document.createElement("span");
+        name.className = "fetch-file-name";
+        name.textContent = "> " + shuffledNames[loaded];
+
+        const fileStatus = document.createElement("span");
+        fileStatus.className = "fetch-file-status";
+        fileStatus.textContent = "INDEXED";
+
+        row.appendChild(name);
+        row.appendChild(fileStatus);
+
+        filesContainer.appendChild(row);
+
+        scanSound();
+
+        filesContainer.scrollTop = filesContainer.scrollHeight;
+
+        loaded++;
+
+        countText.textContent = String(loaded);
+
+        const progress = Math.floor(
+            (loaded / shuffledNames.length) * 100
+        );
+
+        bar.style.width = progress + "%";
+
+        percentText.textContent =
+            "INDEXING ARCHIVE... " + progress + "%";
+
+        statusText.textContent = "INDEXING";
+
+        const regionIndex = Math.min(
+            Math.floor(
+                (loaded / shuffledNames.length) * nodes.length
+            ),
+            nodes.length - 1
+        );
+
+        nodes.forEach(function(node, index) {
+
+            node.classList.toggle(
+                "active",
+                index === regionIndex
+            );
+
+        });
+
+        scannedNodes = Math.max(
+            scannedNodes,
+            regionIndex + 1
+        );
+
+        nodeCountText.textContent = String(scannedNodes);
+
+    }, 80);
+
+}
+
+</script>
+
+</body>
+</html>
